@@ -22,6 +22,9 @@ def pytriples(max_c):
     count_c = 0
 
     for a in range(1, max_c):
+        amax = max_c/(math.sqrt(2))
+        if a >= amax:
+            break
         for b in range(a, max_c):
             if a != b:
                 c = math.sqrt(a**2 + b**2)

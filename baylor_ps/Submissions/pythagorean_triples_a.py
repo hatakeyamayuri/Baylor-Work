@@ -22,6 +22,9 @@ def pytriples(max_c):
     count_c = 0
 
     for a in range(1, max_c):
+        amax = max_c/(math.sqrt(2))
+        if a >= amax:
+            break
         for b in range(a, max_c):
             if a != b:
                 c = math.sqrt(a**2 + b**2)
@@ -45,13 +48,13 @@ b) Smallest a: 3
 c) Smallest b: 4
    Largest b: 96
 
-d) The program systematically checks through all unique, unordered combinations of a and b values to see if, when inputed into a^2 + b^2 = c^2, it will produce a c value that is an integer. The int(c) == c checks whether c is effectively an integer as int(c) will truncate c, cutting off all decimal digits and then comparing it to the original value before truncating to see if it changed. If true, c is effectively an integer and fufills a pythagorean triple.
+d) The program systematically checks through all unique(even when unordered) combinations of a and b values to see if, when inputed into a^2 + b^2 = c^2, it will produce a c value that is an integer. The int(c) == c checks whether c is effectively an integer as int(c) will truncate c, cutting off all decimal digits and then comparing it to the original value before truncating to see if it changed. If true, c is effectively an integer and fufills a pythagorean triple.
 
 f) The line "c = math.sqrt(a**2 + b**2)" ran 4950 times.
 
-g) After improvments, the line "c = math.sqrt(a**2 + b**2)" ran 4095 times.
+g) After improvments, the line "c = math.sqrt(a**2 + b**2)" ran 4445 times.
 
 h) 12471 triples. 
-   49985001 times.
-   14 seconds.
+   45699873 times.
+   13 seconds.
 """

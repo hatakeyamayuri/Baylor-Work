@@ -17,20 +17,9 @@ The lines are not sorted intentionally.  They appear in order of increasing a.
 
 import math
 
-counter = 0
-count_c = 0
+for a in range(1, 100):
+    for b in range(a, 100):
+        c = math.sqrt(a**2 + b**2)
+        if int(c) == c and c <= 100:
+            print(a, b, int(c))
 
-for c in range(1, 101):
-    for a in range(1, 100):
-        if c % 2 == 0:
-            start_b = a
-        else:
-            start_b = a+1
-        for b in range(start_b, 100, 2):
-            count_c += 1
-            if math.sqrt(a**2 + b**2) == c:
-                print(a, b, int(c))
-                counter += 1
-
-print("Line number:", counter)
-print("Times c ran:", count_c)
