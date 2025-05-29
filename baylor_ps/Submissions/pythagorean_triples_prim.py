@@ -18,26 +18,33 @@ The lines are not sorted intentionally.  They appear in order of increasing a.
 import math
 
 def pytriples(max_c):
+    '''
+    Finds primitive pythagorean triples
+    Decreses number of times explicit c calulation done
+    '''
+
     counter = 0
     count_c = 0
 
     for a in range(1, max_c):
-        amax = max_c/(math.sqrt(2))
-        if a >= amax:
+
+        #sets a limit on the number of a values to test.
+        amax = max_c/(math.sqrt(2))  #calculation for max a value
+        if a >= amax:#if a is greater than the limit, breaks loop as all triples have been found
             break
-        for b in range(a, max_c):
-            if a != b:
-                c = math.sqrt(a**2 + b**2)
-                count_c += 1
-                if int(c) == c and c <= max_c:
-                    for i in range(2, max_c):
-                        #print(i, a%i, b%i, int(c%i))
-                        if ((a%i) == (b%i) == int(c%i)) and ((a%i) == 0):
-                            #print("here", a, b)
-                            break
-                        elif i == max_c-1:
-                            print(a, b, int(c))
-                            counter += 1
+
+        for b in range(a+1, max_c): #loops hrough all b values where it is a<b<max_c so no duplicates and a!=b (as no c values will be integers from that ratio)
+            c = math.sqrt(a**2 + b**2)  #calculates c value using a & b 
+            count_c += 1
+            if int(c) == c and c <= max_c: #checks if a, b, c is pythagorean triple within max c constraint
+                for i in range(2, c): #loops through to 2 and c (largest of a, b, c). i acts as divisor
+                    #print(i, a%i, b%i, int(c%i))
+                    if ((a%i) == (b%i) == int(c%i) == 0): #checks if a, b, c are ever divisible by the same divisor
+                        #print("here", a, b)
+                        break #if yes, not a primitive pythagorean triple
+                    if i == max_c-1: #checks if i is in its last iteration, meaning it is primitive pythagorean triple
+                        print(a, b, int(c)) 
+                        counter += 1
 
     print("Line number:", counter)
     print("Times c ran:", count_c)

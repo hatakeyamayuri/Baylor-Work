@@ -1,51 +1,48 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-@author: all of us
+Created on Sat Sep  3 08:10:46 2022
+
+@author: dittmann
 """
 
+'''
+creates 6 different colored spirals
+
+'''
 import math
 import matplotlib.pyplot as plt
 
-colors = ['black', 'blue', 'purple', 'orange', 'green', 'red']
+#list of colors for different curves
+colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple']
 
-params = [
-    (0.006, -0.01, 250, 1000),
-    (0.01, -0.02, 500, 800),
-    (0.015, -0.04, 300, 600),
-    (0.008, -0.08, 180, 700),
-    (0.012, -0.1, 200, 500),
-    (0.01, -0.06, 250, 1500)
-    ]
+base_scale = 0.01
+base_b = -0.04
+base_start = 250
+base_end = 1500
 
-
-"""
-scale = 0.5
-b = -0.04
-start = 250
-end = 200
-"""
-
-for i, (scale, b, start, end) in enumerate(params):
-    
-    print(scale, b, start, end)
-    name="aaa"
-    
-    #==== chunck you want to repeat
+#loops through once for each spiral
+for i in range(len(colors)): 
+    #within loop so it resets and doesn't carry on previous spiral's points
     x_values = []
     y_values = []
 
+    #alters the earlier defined base values (at varying rates) according to which spiral it is creating to create unique spirals
+    scale = (.01 * i) + base_scale
+    b = -(.01 * i) + base_b
+    start = (50 * i) + base_start
+    end = -(100 * i) + base_end
+
+    #given portion. complies the points into lists to create the spirals
     for n in range(start, end + 1):
         t = scale*n
         x = math.exp(b*t) * math.cos(t)
         y = -math.exp(b*t) * math.sin(t)
         x_values.append(x)
         y_values.append(y)
-        
-    plt.scatter(x_values, y_values, label=f'Spiral {i+1}', color=colors[i])
 
-#=====
+    label = f"Spiral {i+1}" #creates the string for label 
+    plt.scatter(x_values, y_values, color=colors[i], label=label) #plots the points with color pulled from earlier 'colors' list
 
-plt.title("Spirals")
-plt.legend()
+plt.legend() #turns the assigned labels into a color legend
 plt.show()

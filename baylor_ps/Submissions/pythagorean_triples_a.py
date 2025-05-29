@@ -18,24 +18,33 @@ The lines are not sorted intentionally.  They appear in order of increasing a.
 import math
 
 def pytriples(max_c):
+    """
+    Finds all int pythagorean triples with c values from 1 to max_c
+    Counts the number of triples and time the explicit calculation was run 
+    Decreses number of times explicit c calulation done
+    """
+
     counter = 0
     count_c = 0
 
     for a in range(1, max_c):
-        amax = max_c/(math.sqrt(2))
+
+        #sets a limit on the number of a values to test.
+        amax = max_c/(math.sqrt(2)) #calculation for max a value
+        #if a is greater than the limit, breaks loop as all triples have been found
         if a >= amax:
             break
-        for b in range(a, max_c):
-            if a != b:
-                c = math.sqrt(a**2 + b**2)
-                count_c += 1
-                if int(c) == c and c <= max_c:
-                    print(a, b, int(c))
-                    counter += 1
+
+        for b in range(a+1, max_c): #loops hrough all b values where it is a<b<max_c so no duplicates and a!=b (as no c values will be integers from that ratio)
+            c = math.sqrt(a**2 + b**2)
+            count_c += 1 #counter for number of time c calculation is run
+            if int(c) == c and c <= max_c: #checks if a, b, c is pythagorean triple within max_c contraint
+                print(a, b, int(c))
+                counter += 1
     print("Line number:", counter)
     print("Times c ran:", count_c)
 
-pytriples(10000)
+pytriples(10000) #calling function with max c value of 10,000
 
 """
 a) 52 lines. 
