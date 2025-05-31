@@ -8,8 +8,8 @@ Created on Sat Sep  3 08:10:46 2022
 
 '''
 creates 6 different colored spirals
-
 '''
+
 import math
 import matplotlib.pyplot as plt
 
