@@ -18,23 +18,20 @@ map_escape_keys = {
 if 'before_selection' not in st.session_state: 
     st.session_state.before_selection = [] #the un-updated list for the specfic run
     st.session_state.escape = [] #updated list
-    st.session_state.counter = 0 
+    st.session_state.counter = 0 #number of guesses taken
 
-    if not os.path.isfile("saved_guess_data.json"):
-        st.session_state.count_dict = { #needs sessionstate
+    if not os.path.isfile("saved_guess_data.json"): #if file doesn't exist
+        st.session_state.count_dict = { #creates empty dict
             "guess_num" : [],
             "population" : [],
             "colors" : [],
         }
-        save_json = json.dumps(st.session_state.count_dict)
-        with open("saved_guess_data.json", "w") as outfile:
-            outfile.write(save_json)
-            
     else:
+        #reads and sets dict
         with open('saved_guess_data.json', 'r') as openfile:
             st.session_state.count_dict = json.load(openfile)
 
-#effectively changes the state of the pill at index inputted thru presence in list
+#changes the state of the pill at index inputted, thru presence in list
 def toggle(i):
     global escape
     if i in set(st.session_state.escape):
@@ -74,7 +71,7 @@ def alter_pill():
         toggle(i)
 
 placeholder = st.empty()
-with placeholder.container(): #so can dynamically delete after winning
+with placeholder.container(): #so can delete after winning
     st.session_state.before_selection = st.pills(
         label="Select all the letters",
         key="escape",
@@ -93,14 +90,17 @@ if len(st.session_state.escape) == len(map_escape_keys):
 
     """""" #configure dict with updated data
 
+    #checks if this number of guesses had been done before
     if st.session_state.counter in set(st.session_state.count_dict["guess_num"]):
         index = st.session_state.count_dict["guess_num"].index(st.session_state.counter)
-        st.session_state.count_dict["population"][index] += 1
-    else:    
+        st.session_state.count_dict["population"][index] += 1 #adds 1 in population of that guess/index 
+    else:   
+        #if not, creates its index set of guess number
         st.session_state.count_dict["guess_num"].append(st.session_state.counter)
         st.session_state.count_dict["population"].append(1)
         index = st.session_state.count_dict["guess_num"].index(st.session_state.counter)
 
+    #sets empty list of colots with all baby blue except current guess number
     for i in range(len(st.session_state.count_dict["guess_num"])):
         st.session_state.count_dict["colors"].append("xkcd:baby blue")
     st.session_state.count_dict["colors"][index] = "xkcd:dark blue"
@@ -129,7 +129,9 @@ if len(st.session_state.escape) == len(map_escape_keys):
 
     """""" #dataset saving
 
-    st.session_state.count_dict["colors"] = []
+    st.session_state.count_dict["colors"] = [] #sets colors list empty
+
+    #saves dict/dataset as json file
     save_json = json.dumps(st.session_state.count_dict)
     with open("saved_guess_data.json", "w") as outfile:
         outfile.write(save_json)
