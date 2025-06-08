@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 
 st.title("40X ESCAPE")
 
@@ -17,6 +19,20 @@ if 'before_selection' not in st.session_state:
     st.session_state.before_selection = [] #the un-updated list for the specfic run
     st.session_state.escape = [] #updated list
     st.session_state.counter = 0 
+
+    if not os.path.isfile("saved_guess_data.json"):
+        st.session_state.count_dict = { #needs sessionstate
+            "guess_num" : [],
+            "population" : [],
+            "colors" : [],
+        }
+        save_json = json.dumps(st.session_state.count_dict)
+        with open("saved_guess_data.json", "w") as outfile:
+            outfile.write(save_json)
+            
+    else:
+        with open('saved_guess_data.json', 'r') as openfile:
+            st.session_state.count_dict = json.load(openfile)
 
 #effectively changes the state of the pill at index inputted thru presence in list
 def toggle(i):
@@ -69,10 +85,51 @@ with placeholder.container(): #so can dynamically delete after winning
         on_change=alter_pill,
     )
 
-if len(st.session_state.escape) == len(map_escape_keys): #if all pills are selected
+#if all pills are selected/ game is finished
+if len(st.session_state.escape) == len(map_escape_keys): 
     placeholder.empty() #delete pills
     st.subheader("ESCAPED 💨")
     st.write(f"You took {st.session_state.counter} steps to solve.")
 
-""""""
+    """""" #configure dict with updated data
 
+    if st.session_state.counter in set(st.session_state.count_dict["guess_num"]):
+        index = st.session_state.count_dict["guess_num"].index(st.session_state.counter)
+        st.session_state.count_dict["population"][index] += 1
+    else:    
+        st.session_state.count_dict["guess_num"].append(st.session_state.counter)
+        st.session_state.count_dict["population"].append(1)
+        index = st.session_state.count_dict["guess_num"].index(st.session_state.counter)
+
+    for i in range(len(st.session_state.count_dict["guess_num"])):
+        st.session_state.count_dict["colors"].append("xkcd:baby blue")
+    st.session_state.count_dict["colors"][index] = "xkcd:dark blue"
+
+    """""" #chart creation
+
+    import matplotlib.pyplot as plt
+
+    x = st.session_state.count_dict["guess_num"]
+    y = st.session_state.count_dict["population"]
+    colors=st.session_state.count_dict["colors"]
+
+    fig, ax = plt.subplots()
+
+    ax.bar(x, y, 
+        width=1, 
+        edgecolor="white", 
+        linewidth=0.7,
+        color=colors,
+        )
+
+    ax.set_title("Guessing Performance by Person")
+    ax.set_xlabel("Number of Guesses Taken")
+    ax.set_ylabel("People")
+    st.pyplot(fig)
+
+    """""" #dataset saving
+
+    st.session_state.count_dict["colors"] = []
+    save_json = json.dumps(st.session_state.count_dict)
+    with open("saved_guess_data.json", "w") as outfile:
+        outfile.write(save_json)
