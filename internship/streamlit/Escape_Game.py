@@ -105,28 +105,6 @@ if len(st.session_state.escape) == len(map_escape_keys):
         st.session_state.count_dict["colors"].append("xkcd:baby blue")
     st.session_state.count_dict["colors"][index] = "xkcd:dark blue"
 
-    """""" #chart creation
-
-    import matplotlib.pyplot as plt
-
-    x = st.session_state.count_dict["guess_num"]
-    y = st.session_state.count_dict["population"]
-    colors=st.session_state.count_dict["colors"]
-
-    fig, ax = plt.subplots()
-
-    ax.bar(x, y, 
-        width=1, 
-        edgecolor="white", 
-        linewidth=0.7,
-        color=colors,
-        )
-
-    ax.set_title("Guessing Performance by Person")
-    ax.set_xlabel("Number of Guesses Taken")
-    ax.set_ylabel("People")
-    st.pyplot(fig)
-
     """""" #dataset saving
 
     st.session_state.count_dict["colors"] = [] #sets colors list empty
